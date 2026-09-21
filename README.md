@@ -19,7 +19,6 @@ Given your source water profile, mash/sparge volumes, grain bill and any brewing
 Build and install the artifact into your local Maven repository:
 
 ```bash
-cd ezwaterlib
 mvn install
 ```
 
@@ -149,7 +148,7 @@ System.out.println("Estimated mash pH: " + result.getPh());
 System.out.println("Residual alkalinity: " + result.getMashWater().getResidualAlk());
 ```
 
-See [`App.java`](ezwaterlib/src/main/java/org/rekhyt/ezwaterlib/App.java) for a complete runnable example, and [`EzWaterCalculatorTest.java`](ezwaterlib/src/test/java/org/rekhyt/ezwaterlib/EzWaterCalculatorTest.java) for further usage patterns.
+See [`App.java`](src/main/java/org/rekhyt/ezwaterlib/App.java) for a complete runnable example, and [`EzWaterCalculatorTest.java`](src/test/java/org/rekhyt/ezwaterlib/EzWaterCalculatorTest.java) for further usage patterns.
 
 ## Why no pounds, ounces, or gallons (a true story)
 

@@ -10,3 +10,14 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# Maven build output
+target/
+
+# Eclipse project metadata
+.classpath
+.project
+.settings/
+
+# Third-party reference material, not part of the library
+EZ_water_calculator_3.0.2_metric.ods
