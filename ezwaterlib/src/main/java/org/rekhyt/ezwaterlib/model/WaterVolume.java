@@ -10,9 +10,9 @@ import java.math.BigInteger;
  * @author michele.antonecchia
  *
  *
- *  This class represent the volume of mash and sparge water
- *  and the correspondi addiction of distilled water (percentage)
- *  
+ *  This class represent the volume of mash and sparge water (in liters)
+ *  and the corresponding addition of distilled water (percentage)
+ *
  */
 public class WaterVolume {
     

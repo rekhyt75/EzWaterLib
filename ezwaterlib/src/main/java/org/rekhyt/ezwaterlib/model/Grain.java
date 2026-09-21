@@ -8,8 +8,9 @@ import java.math.BigDecimal;
 /**
  * @author michele.antonecchia
  *
- * Color is used to calculate acid. So it is used only if isCrystal is true
- * 
+ * Color is used to calculate acid. So it is used only if isCrystal is true.
+ * Weight is in kilograms (matches EZ Water Calculator's metric grain input).
+ *
  */
 public class Grain {
     
