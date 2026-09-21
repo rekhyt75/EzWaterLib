@@ -28,7 +28,7 @@ Then depend on it from another project:
 <dependency>
   <groupId>org.rekhyt</groupId>
   <artifactId>ezwaterlib</artifactId>
-  <version>1.0.0-FINAL</version>
+  <version>1.0.0-SNAPSHOT</version>
 </dependency>
 ```
 
