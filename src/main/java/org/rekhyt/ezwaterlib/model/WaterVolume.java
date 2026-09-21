@@ -4,7 +4,6 @@
 package org.rekhyt.ezwaterlib.model;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 /**
  * @author michele.antonecchia

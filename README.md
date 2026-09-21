@@ -52,7 +52,7 @@ All quantities use the metric units of the source spreadsheet:
 - **`WaterVolume`** — mash and sparge volumes (liters), plus the percentage of each that is distilled/RO water (0–1).
 - **`Grain` / `GrainNormal` / `GrainCrystal`** — a grain addition. `GrainNormal` takes a weight and a known distilled-water pH for that malt. `GrainCrystal` takes a weight and a color (°L) and derives the distilled-water pH from it.
 - **`GrainList`** — the grain bill: a keyed collection of `Grain` entries (`addGrain`/`removeGrain`).
-- **`AdjustWater`** — brewing salt/acid additions: `caSO4` (gypsum), `caCl2` (calcium chloride), `mgSO4` (epsom salt), `caCO3` (chalk), `ca_OH_2` (slaked lime), `naHCO3` (baking soda), `acidulatedMalt`, `lacticAcid` — all in grams except `lacticAcid` (ml). `acidulatedMaltContent`/`lacticAcidContent` default to 2% and 88% and can be overridden.
+- **`AdjustWater`** — brewing salt/acid additions: `caSO4` (gypsum), `caCl2` (calcium chloride), `mgSO4` (epsom salt), `caCO3` (chalk), `caOH2` (slaked lime), `naHCO3` (baking soda), `acidulatedMalt`, `lacticAcid` — all in grams except `lacticAcid` (ml). `acidulatedMaltContent`/`lacticAcidContent` default to 2% and 88% and can be overridden.
 - **`EzWaterCalculator`** — the stateless calculator: `calcEzWater(...)` runs the full calculation, `scaleAdjustment(...)` scales a mash addition to the equivalent sparge addition.
 - **`EzWaterResult` / `ResultWaterProfile`** — the output: `getPh()` (estimated mash pH), `getMashWater()` and `getMashSpargeWater()` (each a `ResultWaterProfile` with calcium/magnesium/sodium/chloride/sulfate, chloride/sulfate ratio, effective and residual alkalinity).
 

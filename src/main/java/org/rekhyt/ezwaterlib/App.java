@@ -7,7 +7,6 @@ import org.rekhyt.ezwaterlib.model.EzWaterResult;
 import org.rekhyt.ezwaterlib.model.GrainCrystal;
 import org.rekhyt.ezwaterlib.model.GrainList;
 import org.rekhyt.ezwaterlib.model.GrainNormal;
-import org.rekhyt.ezwaterlib.model.ResultWaterProfile;
 import org.rekhyt.ezwaterlib.model.WaterProfile;
 import org.rekhyt.ezwaterlib.model.WaterVolume;
 
@@ -63,7 +62,7 @@ public class App {
          */
   
         // adding ingredients to mash water
-        adjustWaterMash.setCa_OH_2(new BigDecimal("1"));
+        adjustWaterMash.setCaOH2(new BigDecimal("1"));
         adjustWaterMash.setCaCO3(new BigDecimal("1"));
         adjustWaterMash.setCaCl2(new BigDecimal("1"));
         adjustWaterMash.setCaSO4(new BigDecimal("1"));

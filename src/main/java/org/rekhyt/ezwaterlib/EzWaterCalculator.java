@@ -22,7 +22,7 @@ import org.rekhyt.ezwaterlib.model.WaterVolume;
  */
 public class EzWaterCalculator {
 
-    private static final MathContext mc = new MathContext(6, RoundingMode.HALF_UP);
+    private static final MathContext MC = new MathContext(6, RoundingMode.HALF_UP);
 
     // pH prediction constant, metric (liters / kg). Imperial equivalent (gallons / lbs) is 0.1085
     private static final BigDecimal PH_SPECIFIC = new BigDecimal("0.0130011821");
@@ -60,6 +60,9 @@ public class EzWaterCalculator {
     private static final BigDecimal RESIDUAL_ALK_CALCIUM_DIVISOR = new BigDecimal("1.4");
     private static final BigDecimal RESIDUAL_ALK_MAGNESIUM_DIVISOR = new BigDecimal("1.7");
 
+    private EzWaterCalculator() {
+    }
+
     public static EzWaterResult calcEzWater(WaterProfile initialWater, WaterVolume volume, GrainList grainList,
             AdjustWater adjustWaterMash, AdjustWater adjustWaterSparge) {
 
@@ -87,19 +90,19 @@ public class EzWaterCalculator {
         if (totalWeight.compareTo(BigDecimal.ZERO) == 0) {
             throw new IllegalArgumentException("grainList must contain at least one grain with a positive weight");
         }
-        grainPh = grainPh.divide(totalWeight, mc);
+        grainPh = grainPh.divide(totalWeight, MC);
 
-        BigDecimal ph = volume.getMash().divide(totalWeight, mc).multiply(PH_SPECIFIC, mc)
-                .add(PH_SPECIFIC_OFFSET, mc);
-        ph = ph.multiply(residualAlk.divide(PH_RESIDUAL_ALK_DIVISOR, mc), mc);
-        ph = ph.add(grainPh, mc);
+        BigDecimal ph = volume.getMash().divide(totalWeight, MC).multiply(PH_SPECIFIC, MC)
+                .add(PH_SPECIFIC_OFFSET, MC);
+        ph = ph.multiply(residualAlk.divide(PH_RESIDUAL_ALK_DIVISOR, MC), MC);
+        ph = ph.add(grainPh, MC);
 
         ezWaterResult.setPh(ph);
 
         // calculate distilled percentage
-        BigDecimal distilled = volume.getMashDistilledPercentage().multiply(volume.getMash(), mc);
-        distilled = distilled.add(volume.getSpargeDistilledPercentage().multiply(volume.getSparge(), mc));
-        distilled = distilled.divide(volume.getMash().add(volume.getSparge()), mc);
+        BigDecimal distilled = volume.getMashDistilledPercentage().multiply(volume.getMash(), MC);
+        distilled = distilled.add(volume.getSpargeDistilledPercentage().multiply(volume.getSparge(), MC));
+        distilled = distilled.divide(volume.getMash().add(volume.getSparge()), MC);
         
         // calculate total ingredients
         AdjustWater adjustWaterMashSparge = calcTotalAdjustment(adjustWaterMash, adjustWaterSparge);
@@ -116,7 +119,7 @@ public class EzWaterCalculator {
 
         AdjustWater total = new AdjustWater();
 
-        total.setCa_OH_2(adjustWaterMash.getCa_OH_2().add(adjustWaterSparge.getCa_OH_2()));
+        total.setCaOH2(adjustWaterMash.getCaOH2().add(adjustWaterSparge.getCaOH2()));
         total.setCaCl2(adjustWaterMash.getCaCl2().add(adjustWaterSparge.getCaCl2()));
         total.setCaCO3(adjustWaterMash.getCaCO3().add(adjustWaterSparge.getCaCO3()));
         total.setCaSO4(adjustWaterMash.getCaSO4().add(adjustWaterSparge.getCaSO4()));
@@ -136,57 +139,57 @@ public class EzWaterCalculator {
         ResultWaterProfile resultWaterProfile = new ResultWaterProfile();
 
         // Calculate minerals
-        BigDecimal gallons = volume.divide(LITERS_PER_GALLON, mc);
+        BigDecimal gallons = volume.divide(LITERS_PER_GALLON, MC);
         if (gallons.compareTo(BigDecimal.ZERO) == 0) {
             throw new IllegalArgumentException("volume must be greater than zero");
         }
 
         // - Calcium
         BigDecimal calcium = BigDecimal.ZERO;
-        calcium = calcium.add(adjustWaterMash.getCaCO3().multiply(CALCIUM_FROM_CACO3, mc));
-        calcium = calcium.add(adjustWaterMash.getCaSO4().multiply(CALCIUM_FROM_CASO4, mc));
-        calcium = calcium.add(adjustWaterMash.getCaCl2().multiply(CALCIUM_FROM_CACL2, mc));
-        calcium = calcium.add(adjustWaterMash.getCa_OH_2().multiply(CALCIUM_FROM_CA_OH_2, mc));
-        calcium = calcium.divide(gallons, mc); // Expression in gallons
+        calcium = calcium.add(adjustWaterMash.getCaCO3().multiply(CALCIUM_FROM_CACO3, MC));
+        calcium = calcium.add(adjustWaterMash.getCaSO4().multiply(CALCIUM_FROM_CASO4, MC));
+        calcium = calcium.add(adjustWaterMash.getCaCl2().multiply(CALCIUM_FROM_CACL2, MC));
+        calcium = calcium.add(adjustWaterMash.getCaOH2().multiply(CALCIUM_FROM_CA_OH_2, MC));
+        calcium = calcium.divide(gallons, MC); // Expression in gallons
         calcium = calcium
-                .add((BigDecimal.ONE.subtract(distilledPercentage, mc)).multiply(initialWater.getCalcium(), mc));
+                .add((BigDecimal.ONE.subtract(distilledPercentage, MC)).multiply(initialWater.getCalcium(), MC));
         resultWaterProfile.setCalcium(calcium);
 
         // - Magnesium
         BigDecimal magnesium = BigDecimal.ZERO;
-        magnesium = magnesium.add(adjustWaterMash.getMgSO4().multiply(MAGNESIUM_FROM_MGSO4, mc));
-        magnesium = magnesium.divide(gallons, mc); // Expression in gallons
+        magnesium = magnesium.add(adjustWaterMash.getMgSO4().multiply(MAGNESIUM_FROM_MGSO4, MC));
+        magnesium = magnesium.divide(gallons, MC); // Expression in gallons
         magnesium = magnesium
-                .add((BigDecimal.ONE.subtract(distilledPercentage, mc)).multiply(initialWater.getMagnesium(), mc));
+                .add((BigDecimal.ONE.subtract(distilledPercentage, MC)).multiply(initialWater.getMagnesium(), MC));
         resultWaterProfile.setMagnesium(magnesium);
 
         // - Sodium
         BigDecimal sodium = BigDecimal.ZERO;
-        sodium = sodium.add(adjustWaterMash.getNaHCO3().multiply(SODIUM_FROM_NAHCO3, mc));
-        sodium = sodium.divide(gallons, mc); // Expression in gallons
-        sodium = sodium.add((BigDecimal.ONE.subtract(distilledPercentage, mc)).multiply(initialWater.getSodium(), mc));
+        sodium = sodium.add(adjustWaterMash.getNaHCO3().multiply(SODIUM_FROM_NAHCO3, MC));
+        sodium = sodium.divide(gallons, MC); // Expression in gallons
+        sodium = sodium.add((BigDecimal.ONE.subtract(distilledPercentage, MC)).multiply(initialWater.getSodium(), MC));
         resultWaterProfile.setSodium(sodium);
 
         // - Chloride
         BigDecimal chloride = BigDecimal.ZERO;
-        chloride = chloride.add(adjustWaterMash.getCaCl2().multiply(CHLORIDE_FROM_CACL2, mc));
-        chloride = chloride.divide(gallons, mc); // Expression in gallons
+        chloride = chloride.add(adjustWaterMash.getCaCl2().multiply(CHLORIDE_FROM_CACL2, MC));
+        chloride = chloride.divide(gallons, MC); // Expression in gallons
         chloride = chloride
-                .add((BigDecimal.ONE.subtract(distilledPercentage, mc)).multiply(initialWater.getChloride(), mc));
+                .add((BigDecimal.ONE.subtract(distilledPercentage, MC)).multiply(initialWater.getChloride(), MC));
         resultWaterProfile.setChloride(chloride);
 
         // - Sulfate
         BigDecimal sulfate = BigDecimal.ZERO;
-        sulfate = sulfate.add(adjustWaterMash.getCaSO4().multiply(SULFATE_FROM_CASO4, mc));
-        sulfate = sulfate.add(adjustWaterMash.getMgSO4().multiply(SULFATE_FROM_MGSO4, mc));
-        sulfate = sulfate.divide(gallons, mc); // Expression in gallons
+        sulfate = sulfate.add(adjustWaterMash.getCaSO4().multiply(SULFATE_FROM_CASO4, MC));
+        sulfate = sulfate.add(adjustWaterMash.getMgSO4().multiply(SULFATE_FROM_MGSO4, MC));
+        sulfate = sulfate.divide(gallons, MC); // Expression in gallons
         sulfate = sulfate
-                .add((BigDecimal.ONE.subtract(distilledPercentage, mc)).multiply(initialWater.getSulfate(), mc));
+                .add((BigDecimal.ONE.subtract(distilledPercentage, MC)).multiply(initialWater.getSulfate(), MC));
         resultWaterProfile.setSulfate(sulfate);
 
         // - Chloride / Sulfate Ratio (undefined, reported as zero, when there is no sulfate)
         BigDecimal chlorideSulfateRatio = sulfate.compareTo(BigDecimal.ZERO) == 0 ? BigDecimal.ZERO
-                : chloride.divide(sulfate, mc);
+                : chloride.divide(sulfate, MC);
         resultWaterProfile.setChlorideSulfateRatio(chlorideSulfateRatio);
 
         // Claculate alkalinity
@@ -198,27 +201,27 @@ public class EzWaterCalculator {
             alk = initialWater.getAlkalinity();
         } else {
             // estimate alkalinity from bicarbonates
-            alk = initialWater.getBicarbonate().multiply(BICARBONATE_TO_ALKALINITY_NUMERATOR, mc)
-                    .divide(BICARBONATE_TO_ALKALINITY_DENOMINATOR, mc);
+            alk = initialWater.getBicarbonate().multiply(BICARBONATE_TO_ALKALINITY_NUMERATOR, MC)
+                    .divide(BICARBONATE_TO_ALKALINITY_DENOMINATOR, MC);
         }
 
         BigDecimal effectiveAlk = BigDecimal.ZERO;
-        effectiveAlk = effectiveAlk.add(adjustWaterMash.getCaCO3().multiply(ALK_FROM_CACO3, mc));
-        effectiveAlk = effectiveAlk.add(adjustWaterMash.getNaHCO3().multiply(ALK_FROM_NAHCO3, mc));
-        effectiveAlk = effectiveAlk.add(adjustWaterMash.getCa_OH_2().multiply(ALK_FROM_CA_OH_2, mc));
+        effectiveAlk = effectiveAlk.add(adjustWaterMash.getCaCO3().multiply(ALK_FROM_CACO3, MC));
+        effectiveAlk = effectiveAlk.add(adjustWaterMash.getNaHCO3().multiply(ALK_FROM_NAHCO3, MC));
+        effectiveAlk = effectiveAlk.add(adjustWaterMash.getCaOH2().multiply(ALK_FROM_CA_OH_2, MC));
         effectiveAlk = effectiveAlk.subtract(adjustWaterMash.getLacticAcid()
-                .multiply(adjustWaterMash.getLacticAcidContent(), mc).multiply(ALK_FROM_LACTIC_ACID, mc));
+                .multiply(adjustWaterMash.getLacticAcidContent(), MC).multiply(ALK_FROM_LACTIC_ACID, MC));
         effectiveAlk = effectiveAlk
-                .subtract(adjustWaterMash.getAcidulatedMalt().multiply(adjustWaterMash.getAcidulatedMaltContent(), mc)
-                        .multiply(ALK_FROM_ACIDULATED_MALT_NUMERATOR, mc)
-                        .divide(ALK_FROM_ACIDULATED_MALT_DENOMINATOR, mc));
-        effectiveAlk = effectiveAlk.divide(gallons, mc); // Expression in gallons
-        effectiveAlk = effectiveAlk.add((BigDecimal.ONE.subtract(distilledPercentage, mc)).multiply(alk, mc));
+                .subtract(adjustWaterMash.getAcidulatedMalt().multiply(adjustWaterMash.getAcidulatedMaltContent(), MC)
+                        .multiply(ALK_FROM_ACIDULATED_MALT_NUMERATOR, MC)
+                        .divide(ALK_FROM_ACIDULATED_MALT_DENOMINATOR, MC));
+        effectiveAlk = effectiveAlk.divide(gallons, MC); // Expression in gallons
+        effectiveAlk = effectiveAlk.add((BigDecimal.ONE.subtract(distilledPercentage, MC)).multiply(alk, MC));
         resultWaterProfile.setEffectiveAlk(effectiveAlk);
 
         // - Residual Alkalinity
-        BigDecimal residualAlk = effectiveAlk.subtract(calcium.divide(RESIDUAL_ALK_CALCIUM_DIVISOR, mc));
-        residualAlk = residualAlk.subtract(magnesium.divide(RESIDUAL_ALK_MAGNESIUM_DIVISOR, mc));
+        BigDecimal residualAlk = effectiveAlk.subtract(calcium.divide(RESIDUAL_ALK_CALCIUM_DIVISOR, MC));
+        residualAlk = residualAlk.subtract(magnesium.divide(RESIDUAL_ALK_MAGNESIUM_DIVISOR, MC));
         resultWaterProfile.setResidualAlk(residualAlk);
 
         return resultWaterProfile;
@@ -235,12 +238,12 @@ public class EzWaterCalculator {
 
         AdjustWater adjustWaterResult = new AdjustWater();
 
-        adjustWaterResult.setCa_OH_2(adjustWater.getCa_OH_2().multiply(volumeRatio, mc).multiply(scaleCaOH2, mc));
-        adjustWaterResult.setNaHCO3(adjustWater.getNaHCO3().multiply(volumeRatio, mc).multiply(scaleNaHCO3, mc));
-        adjustWaterResult.setCaCO3(adjustWater.getCaCO3().multiply(volumeRatio, mc).multiply(scaleCaCO3, mc));
-        adjustWaterResult.setCaSO4(adjustWater.getCaSO4().multiply(volumeRatio, mc).multiply(scaleCaSO, mc));
-        adjustWaterResult.setCaCl2(adjustWater.getCaCl2().multiply(volumeRatio, mc).multiply(scaleCaCl2, mc));
-        adjustWaterResult.setMgSO4(adjustWater.getMgSO4().multiply(volumeRatio, mc).multiply(scaleMgSO4, mc));
+        adjustWaterResult.setCaOH2(adjustWater.getCaOH2().multiply(volumeRatio, MC).multiply(scaleCaOH2, MC));
+        adjustWaterResult.setNaHCO3(adjustWater.getNaHCO3().multiply(volumeRatio, MC).multiply(scaleNaHCO3, MC));
+        adjustWaterResult.setCaCO3(adjustWater.getCaCO3().multiply(volumeRatio, MC).multiply(scaleCaCO3, MC));
+        adjustWaterResult.setCaSO4(adjustWater.getCaSO4().multiply(volumeRatio, MC).multiply(scaleCaSO, MC));
+        adjustWaterResult.setCaCl2(adjustWater.getCaCl2().multiply(volumeRatio, MC).multiply(scaleCaCl2, MC));
+        adjustWaterResult.setMgSO4(adjustWater.getMgSO4().multiply(volumeRatio, MC).multiply(scaleMgSO4, MC));
 
         return adjustWaterResult;
 
@@ -265,7 +268,7 @@ public class EzWaterCalculator {
      */
     public static AdjustWater scaleAdjustment(AdjustWater adjustWater, WaterVolume volume) {
 
-        BigDecimal volumeRatio = volume.getSparge().divide(volume.getMash(),mc);
+        BigDecimal volumeRatio = volume.getSparge().divide(volume.getMash(),MC);
         return scaleAdjustment(adjustWater, volumeRatio);
 
     }

@@ -23,12 +23,12 @@ public class AdjustWater {
     private BigDecimal caCl2 = new BigDecimal(0); // Calc. Chloride
     private BigDecimal mgSO4 = new BigDecimal(0); // Epsom Salt
     private BigDecimal acidulatedMalt = new BigDecimal(0);
-    private BigDecimal acidulatedMaltContent = new BigDecimal("0.02");  // TODO: set to properties - default 2%
+    private BigDecimal acidulatedMaltContent = new BigDecimal("0.02"); // default 2%, override with setAcidulatedMaltContent
     private BigDecimal lacticAcid = new BigDecimal(0);
-    private BigDecimal lacticAcidContent = new BigDecimal("0.88"); // TODO: set to properties - default 88%
+    private BigDecimal lacticAcidContent = new BigDecimal("0.88"); // default 88%, override with setLacticAcidContent
     
     //PH UP
-    private BigDecimal ca_OH_2 = new BigDecimal(0); // Slaked Lime
+    private BigDecimal caOH2 = new BigDecimal(0); // Slaked Lime
     private BigDecimal naHCO3 = new BigDecimal(0); // Baking Soda
     private BigDecimal caCO3 = new BigDecimal(0); // Chalk
     
@@ -74,11 +74,11 @@ public class AdjustWater {
     public void setLacticAcidContent(BigDecimal lacticAcidContent) {
         this.lacticAcidContent = lacticAcidContent;
     }
-    public BigDecimal getCa_OH_2() {
-        return ca_OH_2;
+    public BigDecimal getCaOH2() {
+        return caOH2;
     }
-    public void setCa_OH_2(BigDecimal ca_OH_2) {
-        this.ca_OH_2 = ca_OH_2;
+    public void setCaOH2(BigDecimal caOH2) {
+        this.caOH2 = caOH2;
     }
     public BigDecimal getNaHCO3() {
         return naHCO3;
